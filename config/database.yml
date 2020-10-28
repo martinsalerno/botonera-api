@@ -1,0 +1,23 @@
+development:
+  adapter: postgresql
+  encoding: unicode
+  database: botonera_development
+  pool: 5
+  username: botonera
+  password:
+
+test:
+  adapter: postgresql
+  encoding: unicode
+  database: botonera_test
+  pool: 5
+  username: botonera
+  password:
+
+production:
+  adapter: postgresql
+  encoding: unicode
+  database: botonera_production
+  pool: 5
+  username: botonera
+  password:
