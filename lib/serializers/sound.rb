@@ -3,7 +3,7 @@ module Serializers
     attributes :id, :name, :url
 
     def url
-      S3.presign_get_url(self.object.path)
+      object.download_link
     end
   end
 end

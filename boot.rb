@@ -9,13 +9,11 @@ require_all 'lib/services/*.rb'
 require_all 'lib/models/*.rb'
 require_all 'lib/serializers/*.rb'
 
-if ARGV[0] == '-server'
-  require 'sinatra/base'
-  require_relative 'lib/controllers/helpers.rb'
-  require_relative 'lib/controllers/application.rb'
-  require_relative 'lib/controllers/keyboard.rb'
-  require_relative 'lib/controllers/sound.rb'
-  require_relative 'lib/controllers/user.rb'
+require 'sinatra/base'
+require_relative 'lib/controllers/helpers'
+require_relative 'lib/controllers/application'
+require_relative 'lib/controllers/keyboard'
+require_relative 'lib/controllers/sound'
+require_relative 'lib/controllers/user'
 
-  Controllers::Application.start!
-end
+Controllers::Application.start! if ARGV[0] == '-server'

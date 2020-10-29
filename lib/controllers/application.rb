@@ -1,20 +1,25 @@
-#TODO ADD AUTHENTICATION AND TOKENS 
+# TODO: ADD AUTHENTICATION AND TOKENS
 module Controllers
   class Application < Sinatra::Base
     include Helpers
 
-    set :show_exceptions, :after_handler
+    set :show_exceptions, false
 
     error ActiveRecord::RecordNotFound do
-      'So what happened was...' + env['sinatra.error'].message
+      { error: env['sinatra.error'].message }.to_json
     end
 
     error ActiveRecord::RecordNotUnique do
-      'So what happened was...' + env['sinatra.error'].message
+      { error: env['sinatra.error'].message }.to_json
     end
 
     error Helpers::MissingParameterError do
-      'So what happened was...' + env['sinatra.error'].message
+      { error: env['sinatra.error'].message }.to_json
+    end
+
+    error do
+      puts env['sinatra.error'].backtrace
+      { error: env['sinatra.error'].backtrace }.to_json
     end
   end
 end
