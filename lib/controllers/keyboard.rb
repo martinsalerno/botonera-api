@@ -9,7 +9,7 @@ class Controllers::Application < Sinatra::Base
     required!(:name)
 
     user     = Models::User.find(params[:user_id])
-    keyboard = Models::Keyboard.create!(user_id: user.id, name: params[:name])
+    keyboard = Models::Keyboard.create!(user_id: user.id, name: params_body[:name])
 
     serialize(200, keyboard, serializer: Serializers::Keyboard)
   end
@@ -24,7 +24,7 @@ class Controllers::Application < Sinatra::Base
     required!(:name)
 
     keyboard = Models::User.find(params[:user_id]).keyboards.find(params[:keyboard_id])
-    keyboard.update!(name: params[:name])
+    keyboard.update!(name: params_body[:name])
 
     serialize(200, keyboard, serializer: Serializers::Keyboard)
   end
@@ -34,9 +34,9 @@ class Controllers::Application < Sinatra::Base
 
     user     = Models::User.find(params[:user_id])
     keyboard = user.keyboards.find(params[:keyboard_id])
-    sound    = user.sounds.find(params[:sound_id])
+    sound    = user.sounds.find(params_body[:sound_id])
 
-    return serialize(400, { error: 'invalid_key' }) unless keyboard.upsert_sound!(params[:key], sound)
+    return serialize(400, { error: 'invalid_key' }) unless keyboard.upsert_sound!(params_body[:key], sound)
 
     serialize(200, keyboard, serializer: Serializers::Keyboard)
   end

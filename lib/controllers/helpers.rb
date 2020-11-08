@@ -3,9 +3,15 @@ module Controllers
     class MissingParameterError < StandardError; end
     class InvalidKeyError < StandardError; end
 
+    def params_body
+      @params_body ||= JSON.parse(request&.body&.read || {}, symbolize_names: true)
+    end
+
     def required!(*required_params)
       required_params.each do |required_param|
-        raise MissingParameterError, required_param if params[required_param].nil?
+        if params[required_param].nil? && params_body[required_param].nil?
+          raise MissingParameterError, required_param
+        end
       end
     end
 
