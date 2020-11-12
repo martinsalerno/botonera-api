@@ -16,7 +16,7 @@ module Controllers
     end
 
     def serialize(status_code, obj, serializer: nil)
-      return [status_code, obj.to_json] if serializer.nil?
+      return [status_code, obj.try(:to_json)] if serializer.nil?
 
       payload = if obj.respond_to?(:each)
                   obj.map { |k| serializer.new(k).as_json }

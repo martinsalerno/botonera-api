@@ -32,9 +32,9 @@ ActiveRecord::Schema.define(version: 20_201_026_005_956) do
   create_table 'users', force: :cascade do |t|
     t.string 'email', null: false
     t.integer 'oauth_provider'
-    t.string 'acccess_token'
-    t.string 'refresh_token'
-    t.datetime 'expiry_date'
+    t.string 'oauth_provider_user_id'
+    t.string 'oauth_provider_user_picture'
+    t.string 'ouath__providerrefresh_token'
     t.datetime 'created_at', precision: 6, null: false
     t.datetime 'updated_at', precision: 6, null: false
     t.index ['email'], name: 'index_users_on_email', unique: true

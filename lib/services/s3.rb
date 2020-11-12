@@ -10,6 +10,8 @@ class S3
       presign(:get_object, key)
     end
 
+    private
+
     def presign(method, key)
       presigner = Aws::S3::Presigner.new
 
