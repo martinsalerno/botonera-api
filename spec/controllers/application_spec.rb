@@ -7,8 +7,6 @@ require_relative '../../lib/controllers/user'
 
 module Controllers
   module Test
-    include Rack::Test::Methods
-
     def app
       Controllers::Application
     end

@@ -4,9 +4,14 @@ module Serializers
 
     def keys
       object.keys.each_with_object({}) do |(key, value), accum|
+        next accum[key] = {} if value.empty?
+
+        sound = Models::Sound.find(value['sound_id'])
+
         accum[key] = {
-          sound_id: value['sound_id'],
-          sound_name: value['sound_name']
+          sound_id:   sound.id,
+          sound_name: sound.name,
+          sound_url:  sound.download_link
         }
       end
     end

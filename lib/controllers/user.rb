@@ -11,12 +11,10 @@ class Controllers::Application < Sinatra::Base
 
     return serialize(400, error: 'unknown') if code.nil?
 
-    user_info = OAuth::Google.fetch_user(code)
-    puts user_info
+    user = OAuth::Google.fetch_user(code)
 
-    serialize(400, {}) if user_info.include?(:error)
-
-    serialize(200, {})
+    serialize(400, {}) if user.nil?
+    add_cookie_and_redirect!(user)
   end
 
   get '/oauth/facebook' do
@@ -24,17 +22,30 @@ class Controllers::Application < Sinatra::Base
 
     return serialize(400, error: 'unknown') if code.nil?
 
-    user_info = OAuth::Facebook.fetch_user(code)
-    puts user_info
+    user = OAuth::Facebook.fetch_user(code)
 
-    serialize(400, {}) if user_info.include?(:error)
+    serialize(400, {}) if user.nil?
+    add_cookie_and_redirect!(user)
+  end
+
+  get '/me', auth: :user do
+    serialize(200, current_user, serializer: Serializers::User)
+  end
+
+  post '/logout', auth: :user do
+    Session::Cache.remove(token)
 
     serialize(200, {})
   end
 
-  get 'users/:user_id' do
-    user = Models::User.find(params[:user_id])
+  private
 
-    serialize(200, user, serializer: Serializers::User)
+  def add_cookie_and_redirect!(user)
+    response.set_cookie('botonera-api',
+                        value: Session::Cache.tokenize(user),
+                        httponly: false,
+                        path: '/')
+
+    redirect(Configuration.FRONT_END_URL)
   end
 end

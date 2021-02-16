@@ -1,23 +1,17 @@
 describe Controllers::Application do
-  include Controllers::Test
+  include_context 'authenticated user'
 
-  let!(:user) do
-    Models::User.create!(email: 'test@gmail.com')
-  end
-
-  let!(:sound) do
-    Models::Sound.create(user_id: user.id, name: 'test.mp3', path: '/1/sounds/test.mp3')
-  end
+  let!(:sound) { create(:sound, user: user) }
 
   let(:sound_hash) do
-    { id: sound.id, name: sound.name, url: nil }
+    [{ id: sound.id, name: sound.name, url: sound.download_link }]
   end
 
-  describe 'GET /:user_id/sounds' do
+  describe 'GET /sounds' do
     let(:expected_response) { sound_hash.to_json }
 
     before do
-      get "#{user.id}/sounds"
+      get '/sounds', {}.to_json, auth_header
     end
 
     it 'return the user sounds' do
@@ -25,21 +19,45 @@ describe Controllers::Application do
     end
   end
 
-  describe 'POST /:user_id/sounds' do
+  describe 'POST /sounds' do
+    let(:payload) { { name: 'test-sound' } }
+
     before do
-      post "#{user.id}/sounds", payload
+      post '/sounds', payload.to_json, auth_header
+    end
+
+    it 'returns the new sound' do
+      expect(parsed_body).to include('id', 'name', 'url')
     end
   end
 
-  describe 'POST /:user_id/sound_url' do
+  describe 'POST /sounds/new_url' do
+    let(:payload) { { name: 'brand-new-sound' } }
+
     before do
-      post "#{user.id}/sound_url", payload
+      post '/sounds/new_url', payload.to_json, auth_header
+    end
+
+    it 'returns the presigned url' do
+      expect(parsed_body).to include('url')
     end
   end
 
-  describe 'PATCH /:user_id/sounds/:sound_id' do
+  describe 'PATCH /sounds/:sound_id' do
+    let(:sound_name)      { 'start-sound-name' }
+    let(:sound_to_update) { create(:sound, user: user, name: sound_name) }
+    let(:payload)         { { name: 'new-sound-name' } }
+
+    let(:expected_response) do
+      { id: sound_to_update.id, name: payload[:name], url: sound_to_update.download_link }.to_json
+    end
+
     before do
-      patch "#{user.id}/sounds/:sound_id", payload
+      patch "/sounds/#{sound_to_update.id}", payload.to_json, auth_header
+    end
+
+    it 'returns the updated sound' do
+      expect(last_response.body).to eq(expected_response)
     end
   end
 end

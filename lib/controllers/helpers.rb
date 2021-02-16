@@ -3,8 +3,16 @@ module Controllers
     class MissingParameterError < StandardError; end
     class InvalidKeyError < StandardError; end
 
+    def current_user
+      @current_user ||= fetch_user
+    end
+
+    def user_logged?
+      !current_user.nil?
+    end
+
     def params_body
-      @params_body ||= JSON.parse(request&.body&.read || {}, symbolize_names: true)
+      @params_body ||= JSON.parse(request&.body&.try(:read) || '{}', symbolize_names: true)
     end
 
     def required!(*required_params)
@@ -25,6 +33,21 @@ module Controllers
                 end
 
       [status_code, payload.to_json]
+    end
+
+    private
+
+    def fetch_user
+      return nil if token.nil?
+
+      user_id = Session::Cache.fetch(token)
+      return nil if user_id.nil?
+
+      Models::User.find_by(id: user_id)
+    end
+
+    def token
+      request.env[Controllers::Application::TOKEN_RACK_HEADER]
     end
   end
 end

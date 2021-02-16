@@ -49,10 +49,13 @@ GEM
       aws-sigv4 (~> 1.1)
     aws-sigv4 (1.2.2)
       aws-eventstream (~> 1, >= 1.0.2)
+    bcrypt (3.1.16)
     builder (3.2.4)
     case_transform (0.2)
       activesupport
     concurrent-ruby (1.1.7)
+    crack (0.4.5)
+      rexml
     crass (1.0.6)
     database_cleaner (1.8.5)
     database_cleaner-active_record (1.8.0)
@@ -63,10 +66,13 @@ GEM
       unf (>= 0.0.5, < 1.0.0)
     dotenv (2.7.6)
     erubi (1.9.0)
+    factory_bot (6.1.0)
+      activesupport (>= 5.0.0)
     ffi (1.13.1)
     ffi-compiler (1.0.1)
       ffi (>= 1.0.0)
       rake
+    hashdiff (1.0.1)
     http (4.4.1)
       addressable (~> 2.3)
       http-cookie (~> 1.0)
@@ -81,6 +87,7 @@ GEM
       concurrent-ruby (~> 1.0)
     jmespath (1.4.0)
     jsonapi-renderer (0.2.2)
+    jwt (2.2.2)
     loofah (2.7.0)
       crass (~> 1.0.2)
       nokogiri (>= 1.5.9)
@@ -107,6 +114,7 @@ GEM
       loofah (~> 2.3)
     rainbow (3.0.0)
     rake (13.0.1)
+    redis (4.2.5)
     regexp_parser (1.8.2)
     require_all (3.0.0)
     rexml (3.2.4)
@@ -154,6 +162,10 @@ GEM
       unf_ext
     unf_ext (0.0.7.7)
     unicode-display_width (1.7.0)
+    webmock (3.11.0)
+      addressable (>= 2.3.6)
+      crack (>= 0.3.2)
+      hashdiff (>= 0.4.0, < 2.0.0)
     zeitwerk (2.4.0)
 
 PLATFORMS
@@ -163,18 +175,23 @@ DEPENDENCIES
   active_model_serializers (~> 0.10.10)
   activerecord (~> 6.0.3.4)
   aws-sdk-s3 (~> 1)
+  bcrypt
   database_cleaner-active_record
   dotenv (~> 2.7.6)
+  factory_bot (~> 6.1.0)
   http (~> 4.4.1)
+  jwt (~> 2.2.2)
   pg (~> 1.2.3)
   rack-test
   rake (~> 13.0.1)
+  redis (~> 4.2.5)
   require_all (~> 3.0.0)
   rspec (~> 3.9.0)
   rubocop (~> 1)
   shoulda-matchers (~> 4.0)
   sinatra (~> 2.1.0)
   sinatra-activerecord (~> 2.0.19)
+  webmock (~> 3.11.0)
 
 BUNDLED WITH
    2.1.4

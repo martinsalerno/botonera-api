@@ -13,6 +13,6 @@ class CreateUsers < ActiveRecord::Migration[6.0]
       t.timestamps
     end
 
-    add_index(:users, :email, :oauth_provider, unique: true)
+    add_index(:users, %i[email oauth_provider], unique: true)
   end
 end

@@ -6,16 +6,25 @@ class S3
       presign(:put_object, key)
     end
 
-    def presign_get_url(key)
-      presign(:get_object, key)
+    def presign_get_url(key, filename: nil)
+      presign(:get_object, key, filename: filename)
     end
 
     private
 
-    def presign(method, key)
+    def presign(method, key, filename: nil)
       presigner = Aws::S3::Presigner.new
 
-      presigner.presigned_url(method, bucket: BUCKET, key: key)
+      opts = {
+        bucket: BUCKET,
+        key: key
+      }
+
+      if filename
+        opts.merge!(response_content_disposition: "attachment; filename=#{filename}")
+      end
+
+      presigner.presigned_url(method, opts)
     end
   end
 end

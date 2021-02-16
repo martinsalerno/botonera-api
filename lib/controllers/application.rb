@@ -1,9 +1,18 @@
-# TODO: ADD AUTHENTICATION AND TOKENS
 module Controllers
   class Application < Sinatra::Base
     include Helpers
 
+    TOKEN_RACK_HEADER = 'HTTP_X_BOTONERA_TOKEN'.freeze
+    TOKEN_HEADER      = 'x-botonera-token'.freeze
+    ALLOW_HEADERS     = "authorization, content-type, accept, #{TOKEN_HEADER}".freeze
+
     set :show_exceptions, false
+
+    set(:auth) do |*roles|
+      condition do
+        halt(401) unless user_logged? && roles.include?(:user)
+      end
+    end
 
     before do
       content_type('application/json')
@@ -12,7 +21,7 @@ module Controllers
 
     options '*' do
       response.headers['Allow'] = 'GET, PUT, POST, DELETE, OPTIONS'
-      response.headers['Access-Control-Allow-Headers'] = 'Authorization, Content-Type, Accept, X-User-Email, X-Auth-Token'
+      response.headers['Access-Control-Allow-Headers'] = ALLOW_HEADERS
       response.headers['Access-Control-Allow-Origin']  = '*'
 
       200
@@ -31,7 +40,8 @@ module Controllers
     end
 
     error do
-      puts env['sinatra.error'].backtrace
+      puts env['sinatra.error']
+      puts env['sinatra.error'].backtrace.first(10)
       { error: env['sinatra.error'].backtrace }.to_json
     end
   end
