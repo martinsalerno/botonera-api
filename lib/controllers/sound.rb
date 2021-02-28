@@ -24,12 +24,6 @@ class Controllers::Application < Sinatra::Base
     serialize(200, { url: S3.presign_put_url(path) })
   end
 
-  get '/sounds/:sound_id/download', auth: :user do
-    sound = current_user.sounds.find(params[:sound_id])
-    puts sound
-    redirect(sound.download_link, filename: sound.name, type: 'application/octet-stream', disposition: :attachment)
-  end
-
   patch '/sounds/:sound_id', auth: :user do
     required!(:name)
 
