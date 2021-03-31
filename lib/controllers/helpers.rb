@@ -47,7 +47,7 @@ module Controllers
     end
 
     def token
-      request.env[Controllers::Application::TOKEN_RACK_HEADER]
+      request.env[Controllers::Application::TOKEN_HEADER]
     end
   end
 end

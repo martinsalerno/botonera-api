@@ -9,7 +9,7 @@ module Models
       return false unless VALID_KEYS.include?(key)
 
       keys[key] = {
-        sound_id: sound.id,
+        sound_id:   sound.id,
         sound_name: sound.name
       }
 

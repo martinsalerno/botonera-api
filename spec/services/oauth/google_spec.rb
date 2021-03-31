@@ -20,8 +20,10 @@ describe OAuth::Google do
     end
     let(:profile_response) do
       {
-        id: 419, email: 'marting@gmail.com', verified_email: true, name: 'Martin', given_name: 'Martin',
-        family_name: 'Salerno', picture: 'https://lh3.googleusercontent.com/a-/4FzOc=s96-c', locale: 'es-419'
+        id: 419, email: 'marting@gmail.com', verified_email: true,
+        name: 'Martin', given_name: 'Martin',
+        family_name: 'Salerno', picture: 'https://lh3.googleusercontent.com/a-/4FzOc=s96-c',
+        locale: 'es-419'
       }
     end
     let(:code) { '444' }

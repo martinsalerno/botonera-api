@@ -3,7 +3,7 @@ shared_context 'authenticated user' do |user|
     user = create(:user)
 
     {
-      user: user,
+      user:    user,
       headers: {
         Controllers::Application::TOKEN_HEADER => Session::Cache.tokenize(user)
       }

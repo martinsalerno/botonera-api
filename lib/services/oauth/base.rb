@@ -6,9 +6,7 @@ module OAuth
 
         return { error: token_response['error'] } if error?(token_response)
 
-        puts token_response['access_token']
         profile_response = fetch_profile_response(token_response['access_token'])
-        puts profile_response
         return { error: profile_response['error'] } if error?(profile_response)
 
         find_or_create_user(profile_response.merge(token_response))
@@ -31,12 +29,12 @@ module OAuth
         return user if user.present?
 
         Models::User.create!(
-          email: params[:email],
-          oauth_user_id: params[:oauth_user_id],
-          oauth_user_name: params[:oauth_user_name],
-          oauth_user_picture: params[:oauth_user_picture],
+          email:               params[:email],
+          oauth_user_id:       params[:oauth_user_id],
+          oauth_user_name:     params[:oauth_user_name],
+          oauth_user_picture:  params[:oauth_user_picture],
           ouath_refresh_token: params[:ouath_refresh_token],
-          oauth_provider: params[:oauth_provider]
+          oauth_provider:      params[:oauth_provider]
         ).tap(&:create_default_keyboard!)
       end
 

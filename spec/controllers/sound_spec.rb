@@ -7,6 +7,11 @@ describe Controllers::Application do
     [{ id: sound.id, name: sound.name, url: sound.download_link }]
   end
 
+  before do
+    allow(S3).to receive(:presign_put_url).and_return('presigned-put-url')
+    allow(S3).to receive(:presign_get_url).and_return('presigned-get-url')
+  end
+
   describe 'GET /sounds' do
     let(:expected_response) { sound_hash.to_json }
 

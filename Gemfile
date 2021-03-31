@@ -2,8 +2,6 @@ source 'https://rubygems.org'
 
 git_source(:github) { |repo_name| "https://github.com/#{repo_name}" }
 
-# TODO: split gems into groups
-
 gem 'active_model_serializers',      '~> 0.10.10'
 gem 'activerecord',                  '~> 6.0.3.4'
 gem 'aws-sdk-s3',                    '~> 1'
@@ -23,6 +21,7 @@ gem 'sinatra-activerecord', '~> 2.0.19'
 
 group :test do
   gem 'factory_bot', '~> 6.1.0'
+  gem 'pry-byebug'
   gem 'rspec', '~> 3.9.0'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'webmock', '~> 3.11.0'

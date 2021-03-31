@@ -17,12 +17,10 @@ class S3
 
       opts = {
         bucket: BUCKET,
-        key: key
+        key:    key
       }
 
-      if filename
-        opts.merge!(response_content_disposition: "attachment; filename=#{filename}")
-      end
+      opts.merge!(response_content_disposition: "attachment; filename=#{filename}") if filename
 
       presigner.presigned_url(method, opts)
     end

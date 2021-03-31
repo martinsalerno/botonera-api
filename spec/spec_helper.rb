@@ -3,6 +3,7 @@ require 'rack/test'
 require 'database_cleaner/active_record'
 require 'factory_bot'
 require 'webmock/rspec'
+require 'pry-byebug'
 
 require_relative '../boot'
 require_relative 'controllers/application_spec'

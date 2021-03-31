@@ -11,7 +11,7 @@ module Serializers
     def keyboards
       object.keyboards.map do |keyboard|
         {
-          id: keyboard.id,
+          id:   keyboard.id,
           name: keyboard.name
         }
       end

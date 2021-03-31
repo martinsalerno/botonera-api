@@ -7,6 +7,11 @@ describe Controllers::Application do
     { id: keyboard.id, name: keyboard.name, keys: keyboard.keys }
   end
 
+  before do
+    allow(S3).to receive(:presign_put_url).and_return('presigned-put-url')
+    allow(S3).to receive(:presign_get_url).and_return('presigned-get-url')
+  end
+
   describe 'GET /keyboards' do
     let(:expected_response) { [keyboard_hash].to_json }
 
@@ -93,7 +98,11 @@ describe Controllers::Application do
     context 'when the key is valid' do
       let(:payload) { { key: 'a', sound_id: sound.id } }
       let(:expected_keys) do
-        keyboard_hash[:keys].merge({ 'a': { sound_id: sound.id, sound_name: sound.name } })
+        keyboard_hash[:keys].merge({ 'a': {
+                                     sound_id:   sound.id,
+                                     sound_name: sound.name,
+                                     sound_url:  sound.download_link
+                                   } })
       end
       let(:expected_response) { keyboard_hash.merge(keys: expected_keys).to_json }
 

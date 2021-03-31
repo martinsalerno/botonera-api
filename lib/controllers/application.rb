@@ -2,7 +2,6 @@ module Controllers
   class Application < Sinatra::Base
     include Helpers
 
-    TOKEN_RACK_HEADER = 'HTTP_X_BOTONERA_TOKEN'.freeze
     TOKEN_HEADER      = 'x-botonera-token'.freeze
     ALLOW_HEADERS     = "authorization, content-type, accept, #{TOKEN_HEADER}".freeze
 
@@ -40,8 +39,6 @@ module Controllers
     end
 
     error do
-      puts env['sinatra.error']
-      puts env['sinatra.error'].backtrace.first(10)
       { error: env['sinatra.error'].backtrace }.to_json
     end
   end

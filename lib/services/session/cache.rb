@@ -26,9 +26,9 @@ module Session
       end
 
       def remove(token)
-        user_id    =  decode_user(token)
+        user_id = decode_user(token)
 
-      	redis.del(user_id)
+        redis.del(user_id)
       end
 
       def get(key)
@@ -46,9 +46,9 @@ module Session
       private
 
       def decode_user(token)
-      	user_data = JWT.decode(token, SECRET_KEY, true, { algorithm: CIPHER_ALGORITHM }).first
+        user_data = JWT.decode(token, SECRET_KEY, true, { algorithm: CIPHER_ALGORITHM }).first
 
-      	JSON.parse(user_data)['user_id']
+        JSON.parse(user_data)['user_id']
       end
 
       def redis

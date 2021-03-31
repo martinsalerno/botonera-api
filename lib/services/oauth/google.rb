@@ -7,11 +7,11 @@ module OAuth
     class << self
       def authorization_url
         params = {
-          client_id: Configuration.GOOGLE_CLIENT_ID,
-          redirect_uri: Configuration.GOOGLE_REDIRECT_URI,
-          response_type: 'code',
-          access_type: 'offline',
-          scope: 'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
+          client_id:              Configuration.GOOGLE_CLIENT_ID,
+          redirect_uri:           Configuration.GOOGLE_REDIRECT_URI,
+          response_type:          'code',
+          access_type:            'offline',
+          scope:                  'https://www.googleapis.com/auth/userinfo.profile https://www.googleapis.com/auth/userinfo.email',
           include_granted_scopes: true
         }
 
@@ -23,30 +23,30 @@ module OAuth
       def fetch_access_token(code)
         HTTP.post(TOKEN_ENDPOINT,
                   json: {
-                    code: code,
-                    client_id: Configuration.GOOGLE_CLIENT_ID,
+                    code:          code,
+                    client_id:     Configuration.GOOGLE_CLIENT_ID,
                     client_secret: Configuration.GOOGLE_CLIENT_SECRET,
-                    redirect_uri: Configuration.GOOGLE_REDIRECT_URI,
-                    grant_type: 'authorization_code'
+                    redirect_uri:  Configuration.GOOGLE_REDIRECT_URI,
+                    grant_type:    'authorization_code'
                   })
       end
 
       def fetch_profile(access_token)
         HTTP.get(PROFILE_ENDPOINT,
                  params: {
-                   alt: 'json',
+                   alt:          'json',
                    access_token: access_token
                  })
       end
 
       def standarize_response(response)
         {
-          email: response['email'],
-          oauth_user_id: response['id'],
-          oauth_user_name: response['name'],
-          oauth_user_picture: response['picture'],
+          email:               response['email'],
+          oauth_user_id:       response['id'],
+          oauth_user_name:     response['name'],
+          oauth_user_picture:  response['picture'],
           oauth_refresh_token: response['refresh_token'],
-          oauth_provider: Models::User.oauth_providers[:google]
+          oauth_provider:      Models::User.oauth_providers[:google]
         }
       end
     end
